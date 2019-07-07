@@ -8,9 +8,9 @@ Problems 8 String to Integer (atoi)
 // Author : ioMayday
 // Date   : 2019-07
 
-class Solution {
+class Solution {  
 public:
-    int myAtoi(string str) {
+int myAtoi(string str) {
         
         int len = str.length(); 
         
