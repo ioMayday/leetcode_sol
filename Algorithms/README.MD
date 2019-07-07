@@ -325,7 +325,62 @@ int myAtoi(string str) {
 };
 ``````
 
-# Problems 9 : 
+# Problems 9 : Palindrome Number
+
+``````
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        
+        if (x >=0 && x < 10) return true;
+        if (x < 0 || x%10 == 0) return false; //exclude ex2 and ex3
+        
+        
+        int RevNum = 0;
+        int temp = x;
+        
+        while (temp!=0)
+        {
+            if ((RevNum > INT_MAX/10 || RevNum < INT_MIN/10) && ((temp > 0 && (temp % 10 <= 7)) || temp < 0 && (temp % 10 >= -8))) return false; 
+          RevNum = RevNum*10+ temp%10;
+          temp = temp/10;
+        }
+        
+        if (x==RevNum)
+            return true;
+        else 
+            return false;
+        
+    }
+};
+``````
+
+
+# Problems 10 : Palindrome Number
+
+``````
+
+``````
+
+
+# Problems 11 : Palindrome Number
+
+``````
+
+``````
+
+# Problems 12 : Palindrome Number
+
+``````
+
+``````
+
+# Problems 13 : Palindrome Number
+
+``````
+
+``````
+# Problems 10 : Palindrome Number
 
 ``````
 
