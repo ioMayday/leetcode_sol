@@ -126,24 +126,150 @@ public:
 };
 ````
 
-# Problems 4 :
+# Problems 4 : 	Median of Two Sorted Arrays 
+````
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        // Divide conquere. We know these two arrays are sorted.
+        
+        vector<int> Temp;        
+        int i=0,j=0;
+             
+        int len1 = nums1.size();
+        int len2 = nums2.size();
+        
+        while (i<len1 && j<len2)
+        {
+            if (nums1[i] <= nums2[j])
+                Temp.push_back(nums1[i++]);                              
+            else
+                Temp.push_back(nums2[j++]);      
+        }
+        
+        // nums1 is empty but nums2 not
+        while (j<len2)
+             Temp.push_back(nums2[j++]);
+        
+        // nums2 is empty but nums1 not
+        while (i<len1)
+             Temp.push_back(nums1[i++]);
+                
+        // Find the median number
+        int mid_index = Temp.size()/2;
+        
+        return (Temp.size()%2 == 0)? ((Temp[mid_index]+Temp[mid_index-1])/2.0) : Temp[mid_index];   //judge the length is odd or even number   
+                
+    }
+};
 ````
 
+# Problems 5 : Longest Palindromic Substring
+````
+class Solution {
+public:
+    string longestPalindrome(string s) { //找寻最长的回文字符串
+        
+        int start=0,maxLen=1,Len=s.size();
+        
+        if(Len < 2) return s; //字符串小于等于1时直接返回
+        
+        for (int i=0; i<Len;) //i设为新的回文字符串中间位置处
+        {
+            if (Len-i <= maxLen/2) break; 
+            int j=i,k=i;
+            
+            while (k<Len-1 && s[k]==s[k+1]) k++; //下标k不超过字符串长度
+            i = k+1; //当连续出现同一字母时，i指向重复字母的下一位。若没有，也自动加1
+            
+            while(j>0 && k<Len-1 && s[j-1]==s[k+1]) //比较的是j前一位和k一位，比较失效时，取的j，k有效位
+            {
+                j--;  k++;          //比较以中点i为中心的回文串首尾字母是否相等      
+            }
+            
+            int newLen = k-j+1;//新的回文串长度
+            if(newLen>maxLen) //如果比原回文串长，则赋新值
+            {
+                maxLen=newLen;
+                start=j;
+            }
+                        
+        }
+        
+        return s.substr(start,maxLen); //最大回文子串，从start开始，取maxLen个元素
+               
+    }
+};
 ````
 
-# Problems 5 :
+# Problems 6 : ZigZag Conversion 
+````
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        
+        if (numRows <= 0)  //排除行数不大于0的
+            return "";           
+        
+        if (numRows>=s.length() || numRows==1) //排除行数等于1或行数大于等于字符串长度的
+            return s;
+        
+        int len = s.length();
+        string sbuf;
+        
+        for(int i=0; i<numRows; ++i)  //分行读取
+        {
+            int start = i; //每行字符串起始位置，随i而变化
+            for(int j=1; start<len;++j) //每行读取超出末尾元素停止
+            {
+                sbuf.push_back(s[start]);
+                //第一行和最后一行
+                if(i==0 || i==numRows-1)
+                {
+                    start = start+2*numRows-2;
+                }
+                else {// 中间行，按矩阵排列，其他位置视为为0
+                    if(j%2 ==1)
+                        start = start+2*(numRows-i-1); //奇数列，列数从0开始，
+                    else
+                        start = start+2*i;//偶数列
+                }
+                
+            }
+            
+        }
+        
+        return sbuf;
+        
+    }
+};
+
+//Reference links：the code of JAVA from CSDN
+//https://blog.csdn.net/pistolove/article/details/41408021
+//Thanks to pistolove!
 ````
 
+# Problems 7 : Reverse Integer    
 ````
+class Solution {
+public:
+    int reverse(int x) {
+        
+    if (x > INT_MAX || x < INT_MIN || x==0) return 0; //INT_MAX等都宏定义好了，为整数型的最大值
+        
+        int RevNum = 0;
+       
+        while (x != 0)
+        {
+            if ((RevNum > INT_MAX/10 || RevNum < INT_MIN/10) && ((x > 0 && (x % 10 <= 7)) || x < 0 && (x % 10 >= -8))) return 0; //如果最后移到最高位前的数将溢位，则返回0
+            RevNum = RevNum*10 + x%10; //取低位数给RevNum，之后累乘10，放到高位去
+            x = x/10;                 
+        }
 
-# Problems 6 :
-````
-
-````
-
-# Problems 7 :
-````
-
+        return RevNum;
+        
+    }
+};
 ````
 
 # Problems 8 : String to Integer (atoi) 
@@ -197,4 +323,10 @@ int myAtoi(string str) {
         
     }
 };
+``````
+
+# Problems 9 : 
+
+``````
+
 ``````
