@@ -1,7 +1,10 @@
 # LeetCodeSol_C++
 
 ## LeetCode Algorithms
+
 (Notes: "&hearts;" Manys thanks to haoel's contribution!)
+
+
 | # | Title | Solution | Difficulty |
 |---| ----- | -------- | ---------- |
 
