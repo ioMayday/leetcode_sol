@@ -356,11 +356,62 @@ public:
 ``````
 
 
-# Problems 10 : Palindrome Number
+# Problems 10 : Regular Expression Matching
+方法一
+``````
+// C code 参考LeetCode题解 第三章字符串 3.6节
+bool isMatch(char * s, char * p){
+    if (*p == '\0') return *s == '\0'; //终止条件 p完后，若s也对比完则true，否则false
+    
+    if (*(p+1) != '*') { //如果下个字符不是 *
+        if (*p==*s || (*p=='.' && *s!='\0') ) return isMatch(s+1,p+1); //匹配条件是 字符相等 或者 p对应为.且s非末尾
+        else 
+            return false;
+    }
+    else { //下个字符是 *
+        while ( (*p==*s) || (*p=='.' && *s!='\0') ) //处理完一个 _* 类的p中字符串
+        {
+            if ( isMatch(s,p+2) ) return true; //直接将_*当消除匹配
+            s++;
+        }
+        return isMatch(s,p+2); //处理完_*后，递归进入*的下一位继续匹配
+    } 
 
+}
 ``````
 
+方法二
 ``````
+// C code 没看太懂
+bool isMatch(char * s, char * p){
+    
+ 
+        for (char c=*p; c != '\0'; ++s, c=*p) {
+            if (p[1] != '*') ++p;
+            else if (isMatch(s, p+2)) return true;
+            if (!(c == *s || (c == '.' && *s != '\0'))) return false;
+        }
+        return *s == '\0';
+
+}
+``````
+
+方法三
+``````
+// C++ code 效率低下 但代码简洁
+class Solution {
+public:
+    bool isMatch(string s, string p) {//通过substr,让每次的比较只集中在前两个字符
+        if(p.empty()) return s.empty();
+        if(p[1]=='*') return (isMatch(s,p.substr(2)) || ((p[0]==s[0]||p[0]=='.') && !s.empty() && isMatch(s.substr(1),p)));
+        else return !s.empty()&&(p[0]==s[0]||p[0]=='.') && isMatch(s.substr(1),p.substr(1));
+    }
+};
+
+//https://blog.csdn.net/qq_40280096/article/details/82117696
+``````
+
+
 
 
 # Problems 11 : Palindrome Number
