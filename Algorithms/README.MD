@@ -414,10 +414,64 @@ public:
 
 
 
-# Problems 11 : Palindrome Number
+# Problems 11 : 
 
+方法一 暴力搜索
 ``````
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        if (height.size() < 2) return 0;
+        
+        int h=0,maxV=0,curV;
+        
+        for (int i=0;i<height.size();i++) { //原始遍历
+            
+            for (int j=i+1;j<height.size();j++) {
+                h = height[j]<height[i]? height[j] : height[i];
+                curV = (j-i)*h;
+                
+                if (curV > maxV) maxV=curV;        
+            }        
+        }
+        
+        return maxV;
+           
+    }
+};
+``````
+**方法二**
+思路：
+以底边（从左到右）最长为迭代的起点，哪一侧的木板短，哪一侧的侧边便往里收缩（因为这边已经是瓶颈了，换一个侧壁后容积增大的可能性较大）
+注意到如果从取值的两端向中间遍历，若是两条垂直线中的一条短于另一条，则之后保留该条垂直线的所有容器，容量都不可能超过该容器，因为随着遍历向中间进行，容器的长度在缩小，而这样遍历得到的容器的高度不可能超过初始高度，从而体积也更小。因此之后的遍历若想得到更大的容器，则一定不能保留较短的那条垂直线。
+这导出了如下算法：遍历由列表的两端向中间进行，每次较短的那条垂直线向中间移动一个单位，由对应的另一条垂直线代替；每次计算对应容器的容积，保留这些容积中的最大值；当两条垂直线靠在一起时，遍历结束，此时已经得到了可能的最大容积。这种算法只需进行一层循环，时间复杂度为O(n)，因而更好。
+每个容器的面积，取决于最短的木板。
+**参考书：LeetCode题解 第十二章 贪心法 12.6**
+``````
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        if (height.size() < 2) return 0;
+        
+        //从最外层往里收，桶的底边长越来越小，高由两侧最短边决定
+        // 先满足底边最长，再按侧壁条件，满足容量，遍历一边后即可找出最大容量
+        int start=0,result=INT_MIN;
+        int end = height.size()-1;
+        
+        while (start<end) {
+           
+            //求得height[start],height[end]两侧壁中高度较小一侧的，最大底边下的最大容量
+            result = max( result,  min(height[start],height[end])*(end-start)  ); //用到比较求最大最小值函数,<algorithm>
+            
+            if (height[start] <= height[end]) start++; //缩小底边，增加高度
+            else end--; //往内缩底边，增加高度
+                      
+        }
+        
+        return result;
 
+    }
+};
 ``````
 
 # Problems 12 : Palindrome Number
