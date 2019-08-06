@@ -475,7 +475,13 @@ public:
 ``````
 
 # Problems 12 : Integer to Roman
-**参考书：LeetCode题解 第三章 字符串 3.10 **
+**参考书：LeetCode题解 第三章 字符串 3.10** <br>
+思路：
+
+1.建立基数表
+2.从高位对基数不断迭代取余
+3.直至余数为0
+
 ``````
 class Solution {
 public:
