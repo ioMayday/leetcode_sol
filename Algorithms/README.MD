@@ -507,17 +507,135 @@ public:
 };
 ``````
 
-# Problems 13 : Palindrome Number
+# Problems 13 : Roman to Integer
 
+LeetCode题解思路
+``````
+class Solution {
+public:    
+    inline int map(const char c) {
+            switch(c) {
+                case 'I':return 1;
+                case 'V':return 5;
+                case 'X':return 10;
+                case 'L':return 50;
+                case 'C':return 100;
+                case 'D':return 500;
+                case 'M':return 1000;
+                default:return 0;       
+            }   
+    }
+    
+    int romanToInt(string s) {
+        
+        int len=s.length();
+        int i=0,result=0;
+        
+        for(;i<len;i++) {
+            if ( i>0 && map(s[i])>map(s[i-1]) ) {
+                result += (map(s[i]) - 2*map(s[i-1])); //because s[i-1] has added one time before, so we need to substract it two times   CM CD XC XL IX IV            
+            }
+            else {
+                result += map(s[i]);
+            }   
+        }
+        return result;
+    }
+};
 ``````
 
+**方法二**，自己的思路：关键在判别cM CD这些可能有后缀的要单算，故每次遇到C、X、I这些都要再看后面的数是啥，如果比他们大则按基数表转换成对应数
+
+
+``````
+class Solution {
+public:
+    int romanToInt(string s) {
+        
+        int len=s.length();
+        int i=0,result=0;
+        
+        while(i<len) {
+            
+            if (s[i] == 'C') {
+                if (i+1<len && s[i+1]=='M') {result+=900; i+=2;continue;}
+                else if (i+1<len && s[i+1]=='D') {result+=400; i+=2;continue;}
+                else {result+=100; } //i++;   
+            }
+            
+            if (s[i] == 'X') {
+                if (i+1<len && s[i+1]=='C') {result+=90; i+=2;continue;}
+                else if (i+1<len && s[i+1]=='L') {result+=40; i+=2;continue;}
+                else {result+=10; }   
+            }
+            
+            if (s[i] == 'I') {
+                if (i+1<len && s[i+1]=='X') {result+=9; i+=2;continue;}
+                else if (i+1<len && s[i+1]=='V') {result+=4; i+=2;continue;}
+                else {result+=1; }   
+            }
+            
+            if (s[i] == 'M') result+=1000;
+            if (s[i] == 'D') result+=500;
+            if (s[i] == 'L') result+=50;
+            if (s[i] == 'V') result+=5;
+            
+            i++;
+               
+        }
+        
+        return result;
+        
+    }
+};
 ``````
 
 
-# Problems 13 : Palindrome Number
-
+# Problems 14: Longest Common Prefix
+LeetCode题解思路
 ``````
-
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if ( strs.empty() ) return "";
+        
+        for (int idx=0;idx<strs[0].size();idx++) {
+            for (int i=1; i<strs.size();i++) {
+                if (strs[i][idx] != strs[0][idx])  return strs[0].substr(0,idx);
+            }
+        }
+        
+        return strs[0]; // all is pretix
+    }
+};
+``````
+**方法二**，自己的思路：对上一个方法进行了优化，先找出最小长度的字符串，以其为参照进行横向查找
+``````
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if ( strs.empty() ) return "";
+        
+        //changed
+        int min_len=3256789,min_pos;
+        for (int i=0; i<strs.size();i++) {
+            
+            if(min_len>strs[i].size()) {
+                min_len = strs[i].size();
+                min_pos = i;              
+            }            
+        }
+             
+        
+        for (int idx=0;idx<min_len;idx++) {
+            for (int i=0; i<strs.size();i++) {
+                if (strs[i][idx] != strs[min_pos][idx])  return strs[min_pos].substr(0,idx);
+            }
+        }
+        
+        return strs[min_pos]; // all is pretix
+    }
+};
 ``````
 
 # Problems 13 : Palindrome Number
