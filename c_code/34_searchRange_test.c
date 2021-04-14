@@ -1,10 +1,10 @@
-// int g_returnSize[2] = {0};
+
 // input :
 // [], 0
 // [1], 1
 // [1], 0
 
-// 本地调试能通过，但leetcode对测试用例 [],0 报错堆栈溢出
+// 本地调试ok
 int* searchRange(int* nums, int numsSize, int target, int* returnSize){
     // 动态分配返回数组
     int *returnArray = (int *)malloc(2 * sizeof(int)); // 返回数组
@@ -12,8 +12,6 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize){
     returnArray[0] = -1;
     returnArray[1] = -1;
 	*returnSize = 2; // 返回数组的长度, [-1, -1]只有两个数
-
-    // returnArray = &g_returnArray[0];
 
     if (nums == NULL || numsSize == 0) { // [],0 用例时，nums并不为空指针，只是定义了，但未赋值；
         return returnArray;              // 用numsSize=0来操作返回
@@ -33,13 +31,9 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize){
             right = mid - 1;
         }
     }
-    // linux里&&不会区分nums[left]谁先谁后，这里left为1时依然要nums[left]出现地址越界
-    // if (left < numsSize - 1 && nums[left] == target) returnArray[0] = left;
-    // 修改后
-    if (left < numsSize) {
-        if (nums[left] == target)
-            returnArray[0] = left;
-    }
+    // 边界限制简化，返回左边界判是否超过numsSize,因为left是从0开始往上增的，不用判小于0
+    if (left >= numsSize || nums[left] != target) { ; }
+    else  returnArray[0] = left;
 
     // 找右边界
     left = 0;
@@ -55,11 +49,10 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize){
             right = mid - 1;
         }
     }
-    // if (right < numsSize && nums[right] == target) returnArray[1] = right; //注意边界
-    if (right < numsSize - 1) {
-        if (nums[right] == target)
-            returnArray[1] = right;
-    }
+
+     // 边界限制简化，返回右边界判是否小于0，因为right是从numsSize-1开始往下减的，不用判大于numsSize
+    if (right < 0 || nums[right] != target) { ; }
+    else returnArray[1] = right;
 
     return returnArray; // 遍历完
 }
