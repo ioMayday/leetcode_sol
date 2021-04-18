@@ -1,4 +1,4 @@
-# LeetCodeSol_C++
+# LeetCodeSol Using C and C++
 
 ## LeetCode Algorithms
 
