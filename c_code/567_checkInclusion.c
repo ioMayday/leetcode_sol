@@ -1,51 +1,63 @@
-// 
-// "abcdxabcde"
-// "abcdeabcdx" 
-// output: true
-#define MAX_LEN 128 // 26个小写字母
-bool checkInclusion(char * s1, char * s2) 
+//// 本篇解法参考的labuladong的C++滑窗模板，并进行C代码转换
+//// https://labuladong.gitbook.io/algo/shu-ju-jie-gou-xi-lie/shou-ba-shou-shua-shu-zu-ti-mu/hua-dong-chuang-kou-ji-qiao-jin-jie
+
+#define MAX_LEN 128
+bool checkInclusion(char *t, char *s)
+// int checkInclusion(char *t, char *s)
 {
-    int hash[MAX_LEN] = {0}; // 输入只为小写字母
-    int lenS2 = strlen(s2);
-    int i;
-    for (i = 0; s1[i]; i++) {
-        hash[s1[i] - 'a']++;
+    int hashNeed[MAX_LEN] = {0};  // 在本题中没有负数情况
+    int hashWindow[MAX_LEN] = {0};
+    int start = 0;
+    int end = 0;
+    int minStart = 0;
+    int minLen = INT_MAX;
+    int lenS = strlen(s);
+    int i, lenT = 0;
+    int valid = 0;
+    int keyNum = 0;
+
+    for (i = 0; t[i]; i++) {
+        hashNeed[t[i]]++;
     }
-    int lenS1 = i;
+    lenT = i;  // 原表达长度
+    for (i = 0; i < MAX_LEN; i++) {
+        if (hashNeed[i] != 0) { keyNum++; } // 改成表达键元素个数
+    }
 
-    int left = 0;
-    int right = 0;
-
-    int notFitNum = lenS1;
-    // O(n)遍历，right挪动到末尾结束
-    while (right < lenS2) { // 区间是左闭右开
-        // 先找符合条件窗，右移right
-        if (hash[s2[right] - 'a'] > 0) {
-            notFitNum--;
+    // 记录最小覆盖子串的起始索引及长度
+    while (end < lenS) {
+        // c 是将移入窗口的字符
+        char c = s[end];
+        // 右移窗口
+        end++;
+        // 进行窗口内数据的一系列更新
+        if (hashNeed[c]) { // count函数是查找该值是否存在
+            hashWindow[c]++;
+            if (hashWindow[c] == hashNeed[c]) // 原代码
+                valid++;
         }
-        hash[s2[right] - 'a']--;  // 右指针经过时，将不匹配的减至负数，将匹配的减到0
-        right++;
 
-        // 再找最优解，右移left
-        if (notFitNum == 0) { // 当前范围内已满足
-            // 重点重点
-            while (hash[s2[left] - 'a'] < 0) { //移动指针到第一个满足的字符
-                hash[s2[left] - 'a']++;
-                left++;
-            }
-            // 开始判断连续性
-            // while (hash[s2[left] - 'a'] == 0 && left < right) { // 不要越界
-            while (left < right && hash[s2[left] - 'a'] == 0) { // 数组下标先判范围再引用
-                hash[s2[left] - 'a']++;
-                left++;
-                notFitNum++;
-            }
-            if (notFitNum == lenS1) {
+        // 判断左侧窗口是否要收缩
+        while (end - start >= lenT) {       // 当前窗长大于t的长度时，就要左移left，因为窗长是固定的lenT
+            // 在这里更新最小覆盖子串
+            if (valid == keyNum) { // 键的个数
+                // return 1; // 只含有匹配的字符
                 return true;
             }
-            left = right;
+            // d 是将移出窗口的字符
+            char d = s[start];
+            // 左移窗口
+            start++;
+            // 进行窗口内数据的一系列更新
+            if (hashNeed[d]) {
+                if (hashWindow[d] == hashNeed[d])
+                    valid--; // 匹配数减1
+                hashWindow[d]--; // 当前窗内含有的键值更新
+            }
         }
-
     }
+
+    // 遍历完未找到符合的字符串
+    // return -1;
     return false;
 }
