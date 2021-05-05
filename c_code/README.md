@@ -11,9 +11,6 @@
 34. 题解及debug过程，注意事项  
 
 # 刷题时常见错误
- - 数组下标越界，下标操作后再索引时，一定要保证在有效范围内，防止越界或为负
- - 双指针时，经常误用 left - right 作为长度, 最好使用 end - start 命名更清晰
- - 参考别人代码实现时，重要的是先搞懂思路，弄清每步操作到底是在干啥，自己再用代码去复现，实现更高效
 
 
 # 递归框架思路训练题目搜集
@@ -63,32 +60,6 @@
 # 其他
 1 两数之和 关键在于排序和夹逼求和  
 43. 字符串相乘  || 常用于大数相乘，此题思路清楚，但代码容易出错，特别是进位要多练习
+123。 买卖股票的状态转移初始化不熟，需要多练 动态规划
 
-   // while (hash[s2[left] - 'a'] == 0 && left < right) {
-            while (left < right && hash[s2[left] - 'a'] == 0) { // 数组下标先判范围再引用，否则越界
-
-  题76：  卡壳半天，关键点在于代码转化有误，经验还是先对比观察正确的参考运行过程，看差异点在哪儿，才能找到问题原因  
-  参考：
-  https://leetcode-cn.com/problems/minimum-window-substring/solution/76-zui-xiao-fu-gai-zi-chuan-by-ac_fun-48ph/
-  
-
-        // 参考表达
-        if (hash[s[right]]-- > 0) {
-            notFitNum--;
-        }
-
-        // 错误转化，陷入定势思维
-        if (hash[s[right]] > 0) { 
-            notFitNum--;
-            hash[s[right]]--;
-        } 
-
-        // 正确转化
-        if (hash[s[right]] > 0) {
-            notFitNum--;
-        }
-        hash[s[right]]--;  // 右指针经过时，将不匹配的减至负数，将匹配的减到0
-
-
-  // while (valid == need.size()) {        // 原代码表示的键个数， 如 aa, 则键只有1个，值为2  
-        while (valid == lenT) {           // 而我以为就是t的长度，用lenT代替了，遇到重复字符串就有问题，lenT则为 aa的长度，为2   
+ 
