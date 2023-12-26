@@ -1,5 +1,9 @@
 # LeetCodeSol Using C and C++
 
+> update：
+>
+> 1. 新增Rust/Python语言项
+>
 > 点击进入：[LeetCode刷题系列博客](https://github.com/ioMayday/MyArticles/tree/master/%E8%B7%A8%E5%B9%B3%E5%8F%B0/LeetCode%E5%88%B7%E9%A2%98)
 
 ## LeetCode Algorithms
