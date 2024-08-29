@@ -1,5 +1,13 @@
 # 提交版本
 
+# 解题思路：
+# 1、建立一个字典
+# 2、扫描一遍list，如果target-nums[i]结果在字典内，即返回
+# 3、注意特例：减法结果为nums[i]时，无效
+# 参考资料：
+# https://blog.csdn.net/weixin_43557139/article/details/120626173
+# https://www.runoob.com/python3/python-sort-dictionaries-by-key-or-value.html
+
 # class Solution(object):
 #     def twoSum(self, nums, target):
 #         """
@@ -32,15 +40,12 @@ def twoSum(nums, target):
         """
         key_value = {} # 数值作为key，索引作为value
         for i in range(len(nums)):
-            #key_value[i] = nums[i]
             key_value[nums[i]] = i 
-        # sorted(key_value.items(), key = lambda kv:(kv[1], kv[0]))
 
         res_id = []
         for i in range(len(nums)):
             res = target - nums[i]
             if res in key_value:
-            # key_res = key_value.get(res, default=None)
                 kv = key_value[res]
                 if kv != i:
                     id_stop = key_value[res]
