@@ -72,6 +72,28 @@
 #                     return res_id
 
 
+def test(nums_sorted, target):
+      res_sum = []
+      idx_pair = []
+      nums_len = len(nums_sorted)
+      i = 0
+      j = nums_len - 1
+      while i != j :
+            res = nums_sorted[i][0] + nums_sorted[j][0]
+            res_sum.append(res)
+            idx = []
+            idx.append(i)
+            idx.append(j)
+            idx_pair.append(idx)
+            if (res < target):
+                  i += 1
+            elif res > target:
+                  j -= 1
+            else:
+                  break
+      return res_sum, idx_pair
+
+
 # Solution C：
 # - 先升序排序，并保存原始index
 # - 用双指针双向移动，找到匹配值
@@ -97,6 +119,20 @@ def twoSum(nums, target):
         # print(nums_list)
         nums_sorted = sorted(nums_list, key=lambda x:x[0]) # 0按第0列排序
         # print(nums_sorted)
+
+      #   # 测试双指针移动排序结果(两两之和，及对应idx)
+      #   # 原理：a)排序后的最小和最大索引值结果，是序列中两数之和的中间界限。b)通过左右移动索引，即可调节目标两数和区间，实现O(N)便利，同时避免冗余查询。
+      #   # half left
+      #   sum_max = nums_sorted[nums_len - 1][0] + nums_sorted[nums_len - 2][0]
+      #   res_sum_left, idx_pair_left = test(nums_sorted, sum_max)
+      #   print(res_sum_left)
+      #   print(idx_pair_left)
+
+      #   # half right
+      #   sum_min = nums_sorted[0][0] + nums_sorted[1][0]
+      #   res_sum_right, idx_pair_right = test(nums_sorted, sum_min)
+      #   print(res_sum_right)
+      #   print(idx_pair_right)
 
         i = 0
         j = nums_len - 1
